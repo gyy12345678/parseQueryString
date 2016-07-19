@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>parseQueryString</title>
+</head>
+<body>
+<script>
+	var str = 'http://www.taobao.com:80/index.php?name=lisi&age=23......';
+	function parseQueryString(url){
+		var re = /([a-zA-Z]+:\/\/)([^:\/]+)(:\d+){0,1}(\/?[^\?]*)(\?{0,1}.*)*/gi;
+		var result =  re.exec(url);
+		// console.log(result);
+		var obj = {};
+		return {
+			protocal:result[1]  || "",
+			host:result[2] || "",
+			port:result[3] ? result[3].substr(1):"",
+			path:result[4] || "",
+			params:(function(){
+				var aParam =  result[5]?result[5].match(/[^\?&]+/g):[];
+				// console.log(aParam);
+				for(var i=0;i<aParam.length;i++){
+					var arr = aParam[i].split('=');//[name,lisi]
+					obj[arr[0]] = arr[1];
+				}
+				return obj;
+			})()
+		};
+	}
+	var obj = parseQueryString(str);
+	console.log(obj);
+
+	// var obj = {
+	// 	protocal:'http://',
+	// 	host:'www.taobao.com',
+	// 	port:'80',
+	// 	path:'index.php',
+	// 	params:{
+	// 		name:'lisi',
+	// 		age:23
+	// 	}
+	
+</script>
+</body>
+</html>
+
